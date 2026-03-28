@@ -10,30 +10,32 @@
     width: 200px !important;
     height: 200px !important;
     z-index: 999999 !important;
-    pointer-events: none;
+    pointer-events: none !important;
 }
 
 #fox-pet-container * {
-    pointer-events: auto;
+    pointer-events: auto !important;
 }
 
 /* 狐狸精灵 */
 .fox-sprite {
-    position: absolute;
-    width: 120px;
-    height: 120px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 120px !important;
+    height: 120px !important;
+    cursor: pointer !important;
+    transition: transform 0.3s ease !important;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2)) !important;
 }
 
 .fox-sprite:hover {
-    transform: scale(1.1);
+    transform: scale(1.1) !important;
 }
 
 .fox-svg {
-    width: 100%;
-    height: 100%;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 /* 对话气泡 */
