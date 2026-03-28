@@ -1,14 +1,14 @@
 /**
- * 狐狸宠物组件样式
+ * 狐狸宠物组件样式 - 郭德纲相声风格版
  * 将此 CSS 添加到你的网站样式中
  */
 
 #fox-pet-container {
     position: fixed !important;
-    bottom: 20px !important;
-    right: 20px !important;
-    width: 200px !important;
-    height: 200px !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
     z-index: 999999 !important;
     pointer-events: none !important;
 }
@@ -17,20 +17,21 @@
     pointer-events: auto !important;
 }
 
-/* 狐狸精灵 */
+/* 狐狸精灵 - 放大 50% (180px) */
 .fox-sprite {
     position: absolute !important;
     top: 0 !important;
     left: 0 !important;
-    width: 120px !important;
-    height: 120px !important;
+    width: 180px !important;
+    height: 180px !important;
     cursor: pointer !important;
     transition: transform 0.3s ease !important;
-    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2)) !important;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3)) !important;
+    z-index: 10000 !important;
 }
 
 .fox-sprite:hover {
-    transform: scale(1.1) !important;
+    transform: scale(1.15) !important;
 }
 
 .fox-svg {
@@ -40,129 +41,173 @@
 
 /* 对话气泡 */
 .fox-speech {
-    position: absolute;
-    top: -80px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: white;
-    padding: 12px 20px;
-    border-radius: 20px;
-    font-size: 14px;
-    color: #333;
-    box-shadow: 0 3px 15px rgba(0,0,0,0.15);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    white-space: nowrap;
-    z-index: 10000;
-    font-family: 'Microsoft YaHei', sans-serif;
+    position: absolute !important;
+    top: -80px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    background: white !important;
+    padding: 15px 25px !important;
+    border-radius: 25px !important;
+    font-size: 16px !important;
+    color: #333 !important;
+    box-shadow: 0 3px 20px rgba(0,0,0,0.2) !important;
+    opacity: 0 !important;
+    transition: opacity 0.3s ease !important;
+    white-space: nowrap !important;
+    z-index: 10001 !important;
+    font-family: 'Microsoft YaHei', sans-serif !important;
+    border: 2px solid #E85D04 !important;
 }
 
 .fox-speech::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-top: 8px solid white;
+    content: '' !important;
+    position: absolute !important;
+    bottom: -10px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    border-left: 10px solid transparent !important;
+    border-right: 10px solid transparent !important;
+    border-top: 10px solid white !important;
 }
 
 .fox-speech.show {
-    opacity: 1;
-}
-
-/* 互动菜单 */
-.fox-menu {
-    position: absolute;
-    bottom: 130px;
-    right: 0;
-    background: white;
-    border-radius: 15px;
-    padding: 10px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-    display: none;
-    z-index: 10000;
-}
-
-.fox-menu.show {
-    display: block;
-    animation: slideUp 0.3s ease;
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.fox-menu-btn {
-    display: block;
-    width: 100%;
-    padding: 8px 15px;
-    margin: 5px 0;
-    border: none;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    color: white;
-    font-size: 13px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    font-family: 'Microsoft YaHei', sans-serif;
-}
-
-.fox-menu-btn:hover {
-    transform: scale(1.05);
+    opacity: 1 !important;
 }
 
 /* 爱心特效 */
 .fox-heart {
-    position: absolute;
-    font-size: 20px;
-    animation: floatUpHeart 1.5s ease-out forwards;
-    pointer-events: none;
+    position: absolute !important;
+    font-size: 28px !important;
+    animation: floatUpHeart 1.5s ease-out forwards !important;
+    pointer-events: none !important;
+    z-index: 10002 !important;
 }
 
 @keyframes floatUpHeart {
     0% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
+        opacity: 1 !important;
+        transform: translateY(0) scale(1) !important;
     }
     100% {
-        opacity: 0;
-        transform: translateY(-80px) scale(1.3);
+        opacity: 0 !important;
+        transform: translateY(-100px) scale(1.5) !important;
     }
 }
 
 /* 走路动画 */
 .fox-walking {
-    animation: walkBounce 0.5s infinite alternate;
+    animation: walkBounce 0.4s infinite alternate !important;
 }
 
 @keyframes walkBounce {
     from {
-        transform: translateY(0);
+        transform: translateY(0) scaleX(1) !important;
     }
     to {
-        transform: translateY(-5px);
+        transform: translateY(-8px) scaleX(1) !important;
+    }
+}
+
+.fox-walking[dir="left"] {
+    animation: walkBounceLeft 0.4s infinite alternate !important;
+}
+
+@keyframes walkBounceLeft {
+    from {
+        transform: translateY(0) scaleX(-1) !important;
+    }
+    to {
+        transform: translateY(-8px) scaleX(-1) !important;
+    }
+}
+
+/* 跑步动画 */
+.fox-running {
+    animation: runFast 0.2s infinite alternate !important;
+}
+
+@keyframes runFast {
+    from {
+        transform: translateY(0) scaleX(1) !important;
+    }
+    to {
+        transform: translateY(-12px) scaleX(1) !important;
+    }
+}
+
+/* 跳跃动画 */
+.fox-jumping {
+    animation: jumpUp 0.8s ease-out !important;
+}
+
+@keyframes jumpUp {
+    0% {
+        transform: translateY(0) scale(1, 1) !important;
+    }
+    30% {
+        transform: translateY(-60px) scale(1.1, 0.9) !important;
+    }
+    50% {
+        transform: translateY(-80px) scale(0.9, 1.1) !important;
+    }
+    100% {
+        transform: translateY(0) scale(1, 1) !important;
+    }
+}
+
+/* 玩耍动画 */
+.fox-playing {
+    animation: playSpin 1.5s ease-in-out !important;
+}
+
+@keyframes playSpin {
+    0% {
+        transform: rotate(0deg) scale(1) !important;
+    }
+    25% {
+        transform: rotate(-15deg) scale(1.1) !important;
+    }
+    50% {
+        transform: rotate(0deg) scale(1) !important;
+    }
+    75% {
+        transform: rotate(15deg) scale(1.1) !important;
+    }
+    100% {
+        transform: rotate(0deg) scale(1) !important;
     }
 }
 
 /* 睡觉状态 */
+.fox-sleeping {
+    opacity: 0.7 !important;
+}
+
 .fox-sleeping .fox-eye {
-    animation: sleepBlink 3s infinite;
+    animation: sleepBlink 3s infinite !important;
+    transform: scaleY(0.1) !important;
+    transform-origin: center !important;
 }
 
 @keyframes sleepBlink {
     0%, 90%, 100% {
-        opacity: 0.3;
+        opacity: 0.3 !important;
     }
     50% {
-        opacity: 0.1;
+        opacity: 0.1 !important;
+    }
+}
+
+/* 眨眼动画 */
+.fox-eye {
+    animation: blink 4s infinite !important;
+}
+
+@keyframes blink {
+    0%, 90%, 100% {
+        transform: scaleY(1) !important;
+    }
+    95% {
+        transform: scaleY(0.1) !important;
     }
 }
