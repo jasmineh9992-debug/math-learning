@@ -1,4 +1,15 @@
+"use client";
+
+import { useEffect } from "react";
+
 export default function Home() {
+  useEffect(() => {
+    // 初始化狐狸宠物
+    if (typeof window !== "undefined" && (window as any).initFoxPet) {
+      (window as any).initFoxPet();
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-black">
       <main className="max-w-4xl mx-auto px-6 py-12">
@@ -139,6 +150,9 @@ export default function Home() {
           </p>
         </footer>
       </main>
+      
+      {/* 狐狸宠物容器 */}
+      <div id="fox-pet-container" />
     </div>
   );
 }
