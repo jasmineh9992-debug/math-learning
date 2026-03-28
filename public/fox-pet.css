@@ -4,12 +4,12 @@
  */
 
 #fox-pet-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 200px;
-    height: 200px;
-    z-index: 9999;
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    width: 200px !important;
+    height: 200px !important;
+    z-index: 999999 !important;
     pointer-events: none;
 }
 

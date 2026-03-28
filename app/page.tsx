@@ -1,12 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [foxLoaded, setFoxLoaded] = useState(false);
+  
   useEffect(() => {
     // 初始化狐狸宠物
     if (typeof window !== "undefined" && (window as any).initFoxPet) {
       (window as any).initFoxPet();
+      setFoxLoaded(true);
+      console.log("🦊 狐狸宠物已初始化!");
+    } else {
+      console.log("❌ 狐狸宠物脚本未加载");
     }
   }, []);
 
