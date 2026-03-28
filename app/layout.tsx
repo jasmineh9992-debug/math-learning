@@ -27,7 +27,24 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <head>
+        <link rel="stylesheet" href="/fox-pet.css" />
+      </head>
+      <body className="min-h-full flex flex-col">
+        {children}
+        {/* 狐狸宠物容器 */}
+        <div id="fox-pet-container"></div>
+        <script src="/fox-pet.js" />
+        <script>
+          {`
+            document.addEventListener('DOMContentLoaded', function() {
+              if (typeof initFoxPet === 'function') {
+                initFoxPet();
+              }
+            });
+          `}
+        </script>
+      </body>
     </html>
   );
 }

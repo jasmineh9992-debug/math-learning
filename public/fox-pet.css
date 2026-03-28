@@ -1,0 +1,166 @@
+/**
+ * 狐狸宠物组件样式
+ * 将此 CSS 添加到你的网站样式中
+ */
+
+#fox-pet-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 200px;
+    height: 200px;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+#fox-pet-container * {
+    pointer-events: auto;
+}
+
+/* 狐狸精灵 */
+.fox-sprite {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+}
+
+.fox-sprite:hover {
+    transform: scale(1.1);
+}
+
+.fox-svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* 对话气泡 */
+.fox-speech {
+    position: absolute;
+    top: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 12px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #333;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.15);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    white-space: nowrap;
+    z-index: 10000;
+    font-family: 'Microsoft YaHei', sans-serif;
+}
+
+.fox-speech::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid white;
+}
+
+.fox-speech.show {
+    opacity: 1;
+}
+
+/* 互动菜单 */
+.fox-menu {
+    position: absolute;
+    bottom: 130px;
+    right: 0;
+    background: white;
+    border-radius: 15px;
+    padding: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    display: none;
+    z-index: 10000;
+}
+
+.fox-menu.show {
+    display: block;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fox-menu-btn {
+    display: block;
+    width: 100%;
+    padding: 8px 15px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    font-size: 13px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    font-family: 'Microsoft YaHei', sans-serif;
+}
+
+.fox-menu-btn:hover {
+    transform: scale(1.05);
+}
+
+/* 爱心特效 */
+.fox-heart {
+    position: absolute;
+    font-size: 20px;
+    animation: floatUpHeart 1.5s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes floatUpHeart {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-80px) scale(1.3);
+    }
+}
+
+/* 走路动画 */
+.fox-walking {
+    animation: walkBounce 0.5s infinite alternate;
+}
+
+@keyframes walkBounce {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-5px);
+    }
+}
+
+/* 睡觉状态 */
+.fox-sleeping .fox-eye {
+    animation: sleepBlink 3s infinite;
+}
+
+@keyframes sleepBlink {
+    0%, 90%, 100% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.1;
+    }
+}
