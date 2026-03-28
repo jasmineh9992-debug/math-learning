@@ -1,20 +1,17 @@
 /**
- * 狐狸宠物组件 - 郭德纲相声风格版
- * 使用方法:
- * 1. 在 HTML 中添加：<div id="fox-pet-container"></div>
- * 2. 引入此 JS 文件
- * 3. 调用 initFoxPet() 初始化
+ * 狐狸宠物组件 - 郭德纲相声风格版 v2
+ * 功能：可拖动 + 丹凤眼 + 台词显示
  */
 
 (function() {
     // 配置选项
     const config = {
         containerId: 'fox-pet-container',
-        walkInterval: 3000,      // 随机走动间隔 (ms)
-        walkSpeed: 0.03,         // 移动速度
-        autoWalk: true,          // 是否自动走动
-        followMouse: false,      // 是否跟随鼠标
-        foxSize: 180             // 狐狸大小 (px) - 放大 50%
+        walkInterval: 3000,
+        walkSpeed: 0.03,
+        autoWalk: true,
+        foxSize: 180,
+        draggable: true  // 可拖动
     };
 
     // 狐狸状态
@@ -25,12 +22,11 @@
         isRunning: false,
         isJumping: false,
         isSleeping: false,
-        isFollowing: config.followMouse,
+        isDragging: false,
         happiness: 50,
         energy: 80,
         isInitialized: false,
-        currentAction: 'idle',
-        actionTimer: null
+        dragOffset: { x: 0, y: 0 }
     };
 
     // 郭德纲相声风格台词库
@@ -124,47 +120,46 @@
             '我这老胳膊老腿的！',
             '喘口气，喘口气！',
             '不行了，真不行了！'
+        ],
+        dragging: [
+            '哎哎哎，轻点儿！',
+            '您这是带我去哪儿啊？',
+            '我自己会走！',
+            '别拽别拽！',
+            '得嘞，听您的！',
+            '这待遇，专车接送啊！'
         ]
     };
 
     // DOM 元素
-    let container, foxSprite, foxSpeech, foxContainer;
+    let container, foxSprite, foxSpeech;
 
     // 初始化狐狸宠物
     window.initFoxPet = function(options = {}) {
-        // 合并配置
         Object.assign(config, options);
         
-        // 获取或创建容器
         container = document.getElementById(config.containerId);
         if (!container) {
-            console.error('狐狸宠物：未找到容器元素，请添加 <div id="fox-pet-container"></div>');
+            console.error('狐狸宠物：未找到容器元素');
             return false;
         }
 
-        // 创建狐狸元素
         createFoxElements();
         
-        // 初始化位置
         foxState.position = { 
             x: Math.random() * (window.innerWidth - 200), 
             y: Math.random() * (window.innerHeight - 200) 
         };
 
-        // 绑定事件
         bindEvents();
-
-        // 启动动画
         requestAnimationFrame(updateFoxPosition);
 
-        // 定期随机走动和动作
         setInterval(() => {
-            if (!foxState.isSleeping) {
+            if (!foxState.isSleeping && !foxState.isDragging) {
                 randomAction();
             }
         }, config.walkInterval);
 
-        // 初始问候
         setTimeout(() => {
             showSpeech(dialogues.greet[Math.floor(Math.random() * dialogues.greet.length)]);
         }, 1000);
@@ -211,19 +206,19 @@
                     <ellipse cx="100" cy="105" rx="35" ry="40" fill="#FFF3E0"/>
                     <ellipse cx="100" cy="125" rx="20" ry="25" fill="#FFFFFF"/>
                     
-                    <!-- 眼睛（绿色大眼睛） -->
-                    <ellipse class="fox-eye" cx="80" cy="85" rx="16" ry="18" fill="#FFFFFF"/>
-                    <ellipse class="fox-eye" cx="120" cy="85" rx="16" ry="18" fill="#FFFFFF"/>
-                    <ellipse cx="80" cy="87" rx="11" ry="13" fill="#4CAF50"/>
-                    <ellipse cx="120" cy="87" rx="11" ry="13" fill="#4CAF50"/>
-                    <circle cx="83" cy="82" r="6" fill="#2E7D32"/>
-                    <circle cx="123" cy="82" r="6" fill="#2E7D32"/>
-                    <circle cx="85" cy="80" r="4" fill="#FFFFFF"/>
-                    <circle cx="125" cy="80" r="4" fill="#FFFFFF"/>
+                    <!-- 丹凤眼（细长上扬） -->
+                    <ellipse class="fox-eye" cx="80" cy="85" rx="18" ry="10" fill="#FFFFFF" transform="rotate(-15 80 85)"/>
+                    <ellipse class="fox-eye" cx="120" cy="85" rx="18" ry="10" fill="#FFFFFF" transform="rotate(15 120 85)"/>
+                    <ellipse cx="80" cy="86" rx="13" ry="7" fill="#4CAF50" transform="rotate(-15 80 86)"/>
+                    <ellipse cx="120" cy="86" rx="13" ry="7" fill="#4CAF50" transform="rotate(15 120 86)"/>
+                    <circle cx="82" cy="84" r="4" fill="#2E7D32"/>
+                    <circle cx="122" cy="84" r="4" fill="#2E7D32"/>
+                    <circle cx="84" cy="82" r="3" fill="#FFFFFF"/>
+                    <circle cx="124" cy="82" r="3" fill="#FFFFFF"/>
                     
-                    <!-- 眉毛 -->
-                    <path d="M 65 70 Q 80 65 90 72" stroke="#E85D04" stroke-width="3" fill="none" stroke-linecap="round"/>
-                    <path d="M 110 72 Q 120 65 135 70" stroke="#E85D04" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    <!-- 眉毛（丹凤眉） -->
+                    <path d="M 62 75 Q 80 68 92 74" stroke="#E85D04" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    <path d="M 108 74 Q 120 68 138 75" stroke="#E85D04" stroke-width="3" fill="none" stroke-linecap="round"/>
                     
                     <!-- 鼻子（尖） -->
                     <ellipse cx="100" cy="105" rx="10" ry="7" fill="#5D4037"/>
@@ -243,36 +238,84 @@
         foxSprite = document.getElementById('fox-sprite');
         foxSpeech = document.getElementById('fox-speech');
         
-        // 设置狐狸大小
         foxSprite.style.width = config.foxSize + 'px';
         foxSprite.style.height = config.foxSize + 'px';
     }
 
     // 绑定事件
     function bindEvents() {
-        // 鼠标跟随
-        document.addEventListener('mousemove', (e) => {
-            if (foxState.isFollowing && !foxState.isSleeping) {
-                foxState.targetPosition = {
-                    x: e.clientX - config.foxSize / 2,
-                    y: e.clientY - config.foxSize / 2
-                };
-                foxState.isWalking = true;
-            }
-        });
+        // 拖动功能
+        foxSprite.addEventListener('mousedown', startDrag);
+        foxSprite.addEventListener('touchstart', startDrag, { passive: false });
+        
+        document.addEventListener('mousemove', onDrag);
+        document.addEventListener('touchmove', onDrag, { passive: false });
+        
+        document.addEventListener('mouseup', endDrag);
+        document.addEventListener('touchend', endDrag);
 
-        // 窗口大小变化
         window.addEventListener('resize', () => {
             foxState.position.x = Math.min(foxState.position.x, window.innerWidth - config.foxSize);
             foxState.position.y = Math.min(foxState.position.y, window.innerHeight - config.foxSize);
         });
     }
 
+    // 开始拖动
+    function startDrag(e) {
+        e.preventDefault();
+        foxState.isDragging = true;
+        foxState.isWalking = false;
+        foxState.isRunning = false;
+        foxSprite.classList.remove('fox-walking', 'fox-running');
+        
+        const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+        const clientY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
+        
+        foxState.dragOffset = {
+            x: clientX - foxState.position.x,
+            y: clientY - foxState.position.y
+        };
+        
+        foxSprite.style.cursor = 'grabbing';
+        showSpeech(dialogues.dragging[Math.floor(Math.random() * dialogues.dragging.length)], 2000);
+    }
+
+    // 拖动中
+    function onDrag(e) {
+        if (!foxState.isDragging) return;
+        e.preventDefault();
+        
+        const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+        const clientY = e.type === 'touchmove' ? e.touches[0].clientY : e.clientY;
+        
+        foxState.position.x = clientX - foxState.dragOffset.x;
+        foxState.position.y = clientY - foxState.dragOffset.y;
+        
+        // 边界检查
+        foxState.position.x = Math.max(0, Math.min(foxState.position.x, window.innerWidth - config.foxSize));
+        foxState.position.y = Math.max(0, Math.min(foxState.position.y, window.innerHeight - config.foxSize));
+    }
+
+    // 结束拖动
+    function endDrag() {
+        if (!foxState.isDragging) return;
+        foxState.isDragging = false;
+        foxSprite.style.cursor = 'pointer';
+        showSpeech('得嘞，到地儿了！', 1500);
+    }
+
     // 显示对话
     function showSpeech(text, duration = 2500) {
+        if (!foxSpeech) return;
         foxSpeech.textContent = text;
         foxSpeech.classList.add('show');
-        setTimeout(() => {
+        
+        // 清除之前的定时器
+        if (foxState.actionTimer) {
+            clearTimeout(foxState.actionTimer);
+        }
+        
+        foxState.actionTimer = setTimeout(() => {
             foxSpeech.classList.remove('show');
         }, duration);
     }
@@ -280,7 +323,7 @@
     // 随机动作
     function randomAction() {
         const actions = ['walk', 'run', 'jump', 'play', 'idle'];
-        const weights = [40, 20, 15, 15, 10]; // 权重
+        const weights = [40, 20, 15, 15, 10];
         
         const totalWeight = weights.reduce((a, b) => a + b, 0);
         let random = Math.random() * totalWeight;
@@ -294,7 +337,6 @@
             }
         }
         
-        // 根据动作执行
         switch (selectedAction) {
             case 'walk':
                 foxWalkRandom();
@@ -320,7 +362,7 @@
 
     // 随机走动
     function foxWalkRandom() {
-        if (foxState.isSleeping) return;
+        if (foxState.isSleeping || foxState.isDragging) return;
         
         const maxX = window.innerWidth - config.foxSize;
         const maxY = window.innerHeight - config.foxSize;
@@ -334,7 +376,6 @@
         foxState.isRunning = false;
         foxSprite.classList.add('fox-walking');
         
-        // 翻转方向
         if (foxState.targetPosition.x < foxState.position.x) {
             foxSprite.style.transform = 'scaleX(-1)';
         } else {
@@ -344,7 +385,7 @@
 
     // 随机跑动
     function foxRunRandom() {
-        if (foxState.isSleeping) return;
+        if (foxState.isSleeping || foxState.isDragging) return;
         
         const maxX = window.innerWidth - config.foxSize;
         const maxY = window.innerHeight - config.foxSize;
@@ -358,7 +399,6 @@
         foxState.isWalking = false;
         foxSprite.classList.add('fox-running');
         
-        // 翻转方向
         if (foxState.targetPosition.x < foxState.position.x) {
             foxSprite.style.transform = 'scaleX(-1)';
         } else {
@@ -368,7 +408,7 @@
 
     // 跳跃
     function foxJump() {
-        if (foxState.isSleeping) return;
+        if (foxState.isSleeping || foxState.isDragging) return;
         
         foxState.isJumping = true;
         foxSprite.classList.add('fox-jumping');
@@ -381,7 +421,7 @@
 
     // 玩耍
     function foxPlay() {
-        if (foxState.isSleeping) return;
+        if (foxState.isSleeping || foxState.isDragging) return;
         
         foxSprite.classList.add('fox-playing');
         createHeart();
@@ -404,7 +444,10 @@
 
     // 更新位置
     function updateFoxPosition() {
-        if (foxState.isFollowing) return;
+        if (foxState.isDragging) {
+            requestAnimationFrame(updateFoxPosition);
+            return;
+        }
         
         if ((foxState.isWalking || foxState.isRunning) && !foxState.isSleeping && !foxState.isJumping) {
             const speed = foxState.isRunning ? config.walkSpeed * 3 : config.walkSpeed;
@@ -416,7 +459,6 @@
                 foxState.position.x += dx * speed;
                 foxState.position.y += dy * speed;
                 
-                // 翻转方向
                 if (dx < 0) {
                     foxSprite.style.transform = 'scaleX(-1)';
                 } else {
@@ -441,17 +483,6 @@
         runRandom: foxRunRandom,
         jump: foxJump,
         play: foxPlay,
-        setFollowMouse: (follow) => {
-            foxState.isFollowing = follow;
-            if (follow) showSpeech('得嘞，跟着您走！');
-        },
-        stay: () => {
-            foxState.isWalking = false;
-            foxState.isRunning = false;
-            foxState.isFollowing = false;
-            foxSprite.classList.remove('fox-walking', 'fox-running');
-            showSpeech('好嘞，我在这儿候着！');
-        },
         sayHello: () => {
             const greetings = dialogues.greet;
             showSpeech(greetings[Math.floor(Math.random() * greetings.length)]);
